@@ -6,7 +6,8 @@ var  $canvas = $('.canvas'),
        attempts = 0;
        deck = fas.length,
        $controls = $('.controls')
-       matched = 0;
+       matched = 0,
+       fullDeck = fas.length / 2;
 // shuffle the cards
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
@@ -48,6 +49,48 @@ function makeGrid(num) {
 	}
 	match();
 }; 
+
+// I hope it's not a cheat to use this
+$controls.find('.restart').on('click', function(){
+	swal({
+    allowEscapeKey: false,
+    allowOutsideClick: false,
+    title: 'Are you sure?',
+    text: "Your progress will be Lost!",
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#02ccba',
+    cancelButtonColor: '#f95c3c',
+    confirmButtonText: 'Yes, Restart Game!'
+  }).then(function(isConfirm) {
+    if (isConfirm) {
+      makeGrid(deck);
+    }
+  })
+})
+
+function endGame() {
+
+	if (fullDeck === matched) {
+		swal({
+	    allowEscapeKey: false,
+	    allowOutsideClick: false,
+	    title: 'Nice Job! You did it',
+	    text: "Try again",
+	    type: 'success',
+	    showCancelButton: true,
+	    confirmButtonColor: '#02ccba',
+	    cancelButtonColor: '#f95c3c',
+	    confirmButtonText: 'Let\'s do it!'
+	  }).then(function(isConfirm) {
+	    if (isConfirm) {
+	      makeGrid(deck);
+	    }
+	  })
+	} else {
+		console.log('no, we need more. We only have ' + matched + ' And we need ' + fullDeck);
+	}
+}
 
 function match() {
 	// let's flip the card on the click of the card
@@ -108,52 +151,12 @@ function match() {
 		attempts++;
 		console.log(attempts);
 		$('.attempts').html(attempts);
+
+		if(fullDeck === matched) {
+			endGame();
+		}
 	})
 };
-
-// I hope it's not a cheat to use this
-$controls.find('.restart').on('click', function(){
-	swal({
-    allowEscapeKey: false,
-    allowOutsideClick: false,
-    title: 'Are you sure?',
-    text: "Your progress will be Lost!",
-    type: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#02ccba',
-    cancelButtonColor: '#f95c3c',
-    confirmButtonText: 'Yes, Restart Game!'
-  }).then(function(isConfirm) {
-    if (isConfirm) {
-      makeGrid(deck);
-    }
-  })
-})
-
-function endGame() {
-
-	let fullDeck = fas.length / 2;
-
-	if (fullDeck === matched) {
-		swal({
-	    allowEscapeKey: false,
-	    allowOutsideClick: false,
-	    title: 'Are you sure?',
-	    text: "Your progress will be Lost!",
-	    type: 'warning',
-	    showCancelButton: true,
-	    confirmButtonColor: '#02ccba',
-	    cancelButtonColor: '#f95c3c',
-	    confirmButtonText: 'Yes, Restart Game!'
-	  }).then(function(isConfirm) {
-	    if (isConfirm) {
-	      makeGrid(deck);
-	    }
-	  })
-	} else {
-		console.log('no, we need more. We only have ' + matched + ' And we need ' + fullDeck);
-	}
-}
 // match();
 makeGrid(deck);
 
