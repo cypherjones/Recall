@@ -23,6 +23,11 @@ var wasPaused = true,
     hundreds = $('#hundreds'),
 		tens = $('#tens'),
 		seconds = $('#seconds');
+
+// reset the game
+$controls.find('.restart').on('click', function(){
+  restartGame();
+});
 // shuffle the cards
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
@@ -41,8 +46,7 @@ function shuffle(array) {
   }
 
   return array;
-}
-
+};
 // this function create a grid
 function makeGameBoard(num) {
 	// let's clean the canvas on every submit
@@ -67,32 +71,6 @@ function makeGameBoard(num) {
 
 	match();
 }; 
-
-// I hope it's not a cheat to use this
-$controls.find('.restart').on('click', function(){
-	// show the alert popup
-	swal({
-    allowEscapeKey: false,
-    allowOutsideClick: false,
-    title: 'Are you sure?',
-    text: "Your progress will be Lost!",
-    type: 'warning',
-    footer: 'Better hurry, your timer is running...',
-    showCancelButton: true,
-    confirmButtonColor: '#02ccba',
-    cancelButtonColor: '#f95c3c',
-    confirmButtonText: 'Yes, Restart Game!',
-    onClose: console.log('foo')
-  }).then((result) => {
-    if (result.value) {
-    	//build the game
-      makeGameBoard(deck);
-      // reset the game first
-      resetCallback();      
-    }
-  })
-})
-
 function endGame() {
 
 	if (fullDeck === matched) {
@@ -125,27 +103,28 @@ function endGame() {
 		console.log('no, we need more. We only have ' + matched + ' And we need ' + fullDeck);
 	}
 };
-
-swal({
-  allowEscapeKey: false,
-  allowOutsideClick: false,
-  title: 'Are you ready to play?',
-  text: "C'mon, you got this!",
-  type: 'info',
-  showCancelButton: true,
-  confirmButtonColor: '#02ccba',
-  cancelButtonColor: '#f95c3c',
-  confirmButtonText: 'Yes, start Game!'
-}).then(function(isConfirm) {
-  if (isConfirm) {
-  	//build the game
-    makeGameBoard(deck);
-    // start the time if it's not already going.
-    startCallback();
-  }
-})
-
-
+// start the game
+function initGame() {
+  swal({
+    allowEscapeKey: false,
+    allowOutsideClick: false,
+    title: 'Are you ready to play?',
+    text: "C'mon, you got this!",
+    type: 'info',
+    showCancelButton: true,
+    confirmButtonColor: '#02ccba',
+    cancelButtonColor: '#f95c3c',
+    confirmButtonText: 'Yes, start Game!'
+  }).then((result) => {
+    if (result.value) {
+      //build the game
+      makeGameBoard(deck);
+      // start the time if it's not already going.
+      startCallback();
+    };
+  });
+};
+// we're gong to run the game with this code
 function match() {
 	// let's flip the card on the click of the card
 	$canvas.find('.card').on('click', function(){
@@ -232,7 +211,6 @@ function match() {
 		$(this).hide();
 	});
 };
-
 // let's take away some stars after attempts
 function starRemover(starNum) {
   // loop through stars
@@ -245,15 +223,13 @@ function starRemover(starNum) {
     };
   });
 };
+// make the stars great again
 function resetStars() {
   $('.star').each(function(){
     $(this).addClass('active');
   });
 };
-
-
 // make a timer
-		
 function startCallback(){
   /**
    * When the stopwatch starts, the wasPaused flag is set to false, 
@@ -268,7 +244,6 @@ function startCallback(){
     clearInterval(interval);
     wasPaused = true;
   }
-    
 };
 // reset timer function
 function resetCallback(){
@@ -281,6 +256,7 @@ function resetCallback(){
   seconds.html("00");
   hundreds.html("00")
 };
+// our timer code
 function startTimer() {
 
   tensCount++;
@@ -309,7 +285,31 @@ function startTimer() {
     hundredsCount.html(hundredsCount)
   }
 };
-// match();
-// makeGrid(deck);
+// restart the whole thing, man
+function restartGame() {
+  // show the alert popup
+  swal({
+    allowEscapeKey: false,
+    allowOutsideClick: false,
+    title: 'Are you sure?',
+    text: "Your progress will be Lost!",
+    type: 'warning',
+    footer: 'Better hurry, your timer is running...',
+    showCancelButton: true,
+    confirmButtonColor: '#02ccba',
+    cancelButtonColor: '#f95c3c',
+    confirmButtonText: 'Yes, Restart Game!',
+    onClose: console.log('foo')
+  }).then((result) => {
+    if (result.value) {
+      //build the game
+      makeGameBoard(deck);
+      // reset the game first
+      resetCallback();      
+    };
+  });
+};
+// let's get started
+initGame()
 
 
