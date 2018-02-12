@@ -1,5 +1,7 @@
 // game variables
 var $canvas = $('.canvas'),
+    $attemptsContainer = $('.attempts-box'),
+    $restart = $('.restart'),
     fas = ['superpowers', 'superpowers', 'bicycle', 'bicycle', 'coffee', 'coffee', 's15', 's15', 'btc', 'btc','heart','heart','gamepad','gamepad','creative-commons','creative-commons'],
     cardMatch = [],
     attempts = 0;
@@ -8,7 +10,9 @@ var $canvas = $('.canvas'),
     matched = 0,
     fullDeck = fas.length / 2,
     flip = 0,
-    firstStar = '';
+    firstStar = '',
+    starCount = 1,
+    endGameMessage = '';
 // Timer variables
 var pastTimes = [];
 // Timer variables
@@ -23,7 +27,10 @@ var wasPaused = true,
     hundreds = $('#hundreds'),
 		tens = $('#tens'),
 		seconds = $('#seconds');
-
+//hide the canvas on start
+$canvas.hide();
+$attemptsContainer.hide();
+$restart.hide();
 // reset the game
 $controls.find('.restart').on('click', function(){
   restartGame();
@@ -51,6 +58,16 @@ function shuffle(array) {
 function makeGameBoard(num) {
 	// let's clean the canvas on every submit
 	$canvas.empty();
+  // show the canvas and other bits
+  $canvas.fadeIn(function(){
+    $(this).show();
+  });
+  $attemptsContainer.fadeIn(function(){
+    $(this).show();
+  })
+  $restart.fadeIn(function(){
+    $(this).show();
+  })
 
 	// let's clear out attemps and matches
 	attempts = 0;
@@ -69,26 +86,30 @@ function makeGameBoard(num) {
   // reset stars
   
 
-	match();
+	gamePlay();
 }; 
+// this is what happens when we end the game
 function endGame() {
 
 	if (fullDeck === matched) {
 
     startCallback();
+    // count stars
+    countStars();
 
 		swal({
 	    allowEscapeKey: false,
 	    allowOutsideClick: false,
-	    title: `Nice Job! You did it in ${hundredsCount}:${secondsCount}:${tensCount} with only ${attempts} attempts`,
-	    text: "Try again",
+	    title: `Nice Job!`,
+	    footer: "Give it another go!",
+      text: `You did it in ${hundredsCount}:${secondsCount}:${tensCount} with only ${attempts} attempts and with ${starCount} stars. ${endGameMessage}`,
 	    type: 'success',
 	    showCancelButton: true,
 	    confirmButtonColor: '#02ccba',
 	    cancelButtonColor: '#f95c3c',
 	    confirmButtonText: 'Let\'s do it!'
-	  }).then(function(isConfirm) {
-	    if (isConfirm) {
+	  }).then((result) => {
+	    if (result.value) {
         // reset the board
 	      makeGameBoard(deck);
         // clear the timer
@@ -97,11 +118,16 @@ function endGame() {
         resetStars();
         // star the timer
         startCallback();
-	    }
+	    } else if (result.dismiss === swal.DismissReason.cancel) {
+        $canvas
+        .empty()
+        .append('<h2 class="thanks">Thanks for playing Recall.');
+        $restart.fadeOut(function(){
+          $(this).hide();
+        })
+      }
 	  })
-	} else {
-		console.log('no, we need more. We only have ' + matched + ' And we need ' + fullDeck);
-	}
+	} 
 };
 // start the game
 function initGame() {
@@ -125,7 +151,7 @@ function initGame() {
   });
 };
 // we're gong to run the game with this code
-function match() {
+function gamePlay() {
 	// let's flip the card on the click of the card
 	$canvas.find('.card').on('click', function(){
 		// find the card that is open and toggle it with
@@ -191,13 +217,13 @@ function match() {
       $('.attempts').html(attempts);
       // star taking away stars
       // ** I think there is a more elegant way to do this, but...
-      if (attempts > '10') {
+      if (attempts >= '20') {
         starRemover('1');
       } 
-      if (attempts > '15') {
+      if (attempts >= '25') {
         starRemover('2');
       }
-      if (attempts > '20') {
+      if (attempts >= '30') {
         starRemover('3');
       }
     };
@@ -305,11 +331,32 @@ function restartGame() {
       //build the game
       makeGameBoard(deck);
       // reset the game first
-      resetCallback();      
+      resetCallback();
+      // restart the timer
+      startCallback();      
     };
   });
 };
+// get a star count
+function countStars() {
+  starCount = $('.star.active').length
+
+  // ending message
+    switch (starCount) {
+      case 0:
+        endGameMessage = 'Dude, try again. Really. Like now.';
+        break;
+      case 1:
+        endGameMessage = 'Really. I know you can do better';
+        break;
+      case 2:
+        endGameMessage = 'I think you have more in you.';
+        break;
+      case 3:
+        endGameMessage = 'Not too shabby.';
+        break;
+    } 
+};
 // let's get started
 initGame()
-
 
