@@ -32,9 +32,7 @@ $canvas.hide();
 $attemptsContainer.hide();
 $restart.hide();
 // reset the game
-$controls.find('.restart').on('click', function(){
-  restartGame();
-});
+$controls.find('.restart').on('click', restartGame);
 // shuffle the cards
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
