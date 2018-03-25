@@ -4,6 +4,7 @@ body
   height: 100%
   color: #2e3d49
   font-family 'Open Sans', sans-serif
+  margin auto
 a
   text-decoration none
 h1
@@ -21,14 +22,22 @@ h1
 .attempts-box
   padding-bottom 40px
 .canvas
-  max-width 700px
+  // max-width 700px
   margin 0 auto
   padding 32px
   background-color #999999
+  display -webkit-flex
+  display -moz-flex
+  display -ms-flex
+  display -o-flex
+  display flex
+  flex-wrap wrap
+  justify-content space-around
+  width 33%
 .canvas .card
 	display inline-block
-	height 150px
-	width 150px
+	height 115px
+	width 115px
 	background-color #2e3d49
 	margin 0 30px 30px 0
 	line-height 150px
@@ -79,3 +88,38 @@ button:focus
   color red
 .thanks
   text-align center
+  
+@media screen and (max-width: 1024px)
+  .canvas .card
+    height 100px
+    width 100px
+    font-size 45px
+    line-height 90px
+  .canvas
+    width 48%
+
+@media screen and (max-width: 768px)
+  .canvas
+    width 78%
+
+@media screen and (max-width: 479px)
+ .canvas .card 
+   height 50px
+   width 50px
+   font-size 24px
+   line-height 50px
+  .swal2-popup .swal2-styled
+    padding 0.625em 1em !important
+  #display
+    margin-top 1px
+    margin-bottom 1px
+  .attempts-box
+    padding-bottom 0
+@media screen and (max-width: 360px)
+  .canvas .card
+    height 45px
+    width 45px
+@media screen and (max-width: 320px)
+  .canvas .card
+    height 39px
+    width 39px

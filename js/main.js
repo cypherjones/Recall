@@ -1,12 +1,14 @@
+"use strict";
+
 // game variables
 var $canvas = $('.canvas'),
     $attemptsContainer = $('.attempts-box'),
     $restart = $('.restart'),
     fas = ['superpowers', 'superpowers', 'bicycle', 'bicycle', 'coffee', 'coffee', 's15', 's15', 'btc', 'btc','heart','heart','gamepad','gamepad','creative-commons','creative-commons'],
     cardMatch = [],
-    attempts = 0;
+    attempts = 0,
     deck = fas.length,
-    $controls = $('.controls')
+    $controls = $('.controls'),
     matched = 0,
     fullDeck = fas.length / 2,
     flip = 0,
@@ -95,12 +97,23 @@ function endGame() {
     // count stars
     countStars();
 
+    let littleDigit = '';
+
+    if (secondsCount < 9) {
+
+      littleDigit = 0;
+
+    } else {
+
+      littleDigit = '';
+    }
+
 		swal({
 	    allowEscapeKey: false,
 	    allowOutsideClick: false,
 	    title: `Nice Job!`,
 	    footer: "Give it another go!",
-      text: `You did it in ${hundredsCount}:${secondsCount}:${tensCount} with only ${attempts} attempts and with ${starCount} stars. ${endGameMessage}`,
+      text: `You did it in ${hundredsCount}:${littleDigit}${secondsCount}:${tensCount} with only ${attempts} attempts and with ${starCount} stars. ${endGameMessage}`,
 	    type: 'success',
 	    showCancelButton: true,
 	    confirmButtonColor: '#02ccba',
@@ -155,8 +168,9 @@ function gamePlay() {
 		// find the card that is open and toggle it with
 		// the flip class
 		$(this).addClass('opened').toggleClass('flip');
+
 		// grab the html of the card that is opend
-		card = $(this).context.innerHTML;
+		let card = $(this).context.innerHTML;
 		// push the card content into the the cardMatch array
 		cardMatch.push(card);
 		// lets test and see if the cards are alike
