@@ -1,32 +1,20 @@
-# Memory Game
+# Memory Game - Recall
 
-## A js Memory Game
-This is going to be a huge challenge for an old duck like me. So here goes. 
-![game example](https://github.com/cypherjones/Recall/blob/master/img/example001.png)
+### AJ's Memory Game 
+We were tasked to build a classic memory game using javascript and naturally our coding skills with HTML, CSS and the like. Here is a little taste at the end result --> [game example](https://github.com/cypherjones/Recall/blob/master/img/example001.png).
 
-### Challenges
-I had a ton of challenges for a first time Frontend guy. I'll try to go through them here in relative detail.
+### Prerequisites and Installing
+There isn't anything you really need to run and play this game. Just make sure you have ``` javascript``` enabled on your browser. If you do, you should be good to go. 
 
-#### Shuffle, really?
-I literally had no idea how to shuffle anything programatically starting out. And to be honest, I'm not entirely sure how this code works. But I did my research and found something that most people seemed to use when trying shuffle any sort of array. So thanks to [Stackoverflow](https://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array).
+Likewise, there is nothing to install. Just follow the prompts and enjoy.
 
-```javascript
-function shuffle(array) {
-  var currentIndex = array.length, temporaryValue, randomIndex;
+#### Built With
+I used several pretty cool tools to build this game along with the instructions from the guys and gals over at Udacity. 
 
-  // While there remain elements to shuffle...
-  while (0 !== currentIndex) {
+* [font awesome](http://fontawesome.io) - for some great icons
+* [Sweet Alert](http://sweetalert2.com) - for the prompts and notifications
 
-    // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
+These tools allowed me to develop the game pretty quickly. 
 
-    // And swap it with the current element.
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
-  }
-
-  return array;
-};
-```
+### License
+This project is licensed under the MIT license.
